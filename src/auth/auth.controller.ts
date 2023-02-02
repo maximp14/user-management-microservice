@@ -1,16 +1,21 @@
-import { loginType } from './types/login.type';
-import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
+import { loginType } from "./types/login.type";
+import { Body, Controller, Post } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { LoginDto } from "./dto/login.dto";
 
-@Controller('auth')
+@Controller("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/login')
+  @Post("/login")
   async login(@Body() loginDto: LoginDto): Promise<loginType> {
     const result = this.authService.login(loginDto);
 
     return result;
+  }
+
+  @Post("/confirm")
+  async confirmEmail(@Body() confirmDto: { token: string }) {
+    return this.authService.confirmEmail(confirmDto.token);
   }
 }
