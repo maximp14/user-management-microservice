@@ -25,7 +25,9 @@ export class AuthService {
     pass: string
   ): Promise<Omit<CreateUserDto, "password">> {
     const user = await this.userService.findByEmail(email);
+
     const isValid = await bcrypt.compare(pass, user.password);
+
     if (user && isValid) {
       const { password, ...result } = user;
       return result;
@@ -40,7 +42,7 @@ export class AuthService {
       throw new HttpException("Invalid credentials", HttpStatus.UNAUTHORIZED);
     }
 
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, id: user.id };
     const access_token = this.jwtService.sign(payload);
 
     return {

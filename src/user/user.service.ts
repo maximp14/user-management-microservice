@@ -25,10 +25,17 @@ export class UserService {
     if (user) {
       throw new ConflictException("Email already in use");
     }
-    const newUser = this.userRepository.create(userDto);
-    await newUser.hashPassword();
+    const hashedPassword = await bcrypt.hash(userDto.password, 10);
+    const newUser = this.userRepository.create({
+      ...userDto,
+      password: hashedPassword,
+    });
     await this.emailService.sendVerificationMail(userDto.email, userDto.name);
     return this.userRepository.save(newUser);
+  }
+
+  async getUsers(): Promise<CreateUserDto[]> {
+    return this.userRepository.find();
   }
 
   async findById(id: number): Promise<CreateUserDto> {

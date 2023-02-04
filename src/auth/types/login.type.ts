@@ -1,6 +1,6 @@
 type payloadType = {
   email: string;
-  sub: number;
+  id: number;
 };
 
 export type loginType = {
