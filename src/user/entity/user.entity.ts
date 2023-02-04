@@ -1,17 +1,15 @@
-import { Role } from './../role.enun';
+import { Role } from "./../role.enun";
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import * as bcrypt from 'bcrypt';
+} from "typeorm";
 
-@Entity({ name: 'users' })
+@Entity({ name: "users" })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,7 +23,7 @@ export class User {
   @Column()
   address: string;
 
-  @Column({ name: 'phone_number' })
+  @Column({ name: "phone_number" })
   phoneNumber: string;
 
   @Column()
@@ -34,27 +32,21 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ name: 'profile_picture' })
+  @Column({ name: "profile_picture" })
   profilePicture: string;
 
-  @Column({ type: 'enum', enum: Role, default: Role.User })
+  @Column({ type: "enum", enum: Role, default: Role.User })
   role: Role;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
 
-  @Column({ name: 'is_active', default: false })
+  @Column({ name: "is_active", default: false })
   isActive: boolean;
 
-  @Column({ name: 'is_deleted', default: false })
+  @Column({ name: "is_deleted", default: false })
   isDeleted: boolean;
-
-  @BeforeInsert()
-  @BeforeUpdate()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
 }
