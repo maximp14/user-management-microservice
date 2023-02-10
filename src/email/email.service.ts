@@ -31,4 +31,16 @@ export class EmailService {
       },
     });
   }
+
+  async sendGeneratedPassword(email, password, name) {
+    await this.mailerService.sendMail({
+      to: email,
+      subject: "Password reseted",
+      template: "./recovery.hbs",
+      context: {
+        name: name,
+        password: password,
+      },
+    });
+  }
 }

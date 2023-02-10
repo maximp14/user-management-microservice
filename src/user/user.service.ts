@@ -50,13 +50,27 @@ export class UserService {
     return user;
   }
 
-  async resetPassword(email: string): Promise<ChangePasswordDto> {
+  async resetPassword(email: string): Promise<{ message: string }> {
     if (!email) {
       throw new BadRequestException("Email is required");
     }
     const user = await this.findByEmail(email);
-    // send email to enter the new password
-    return null;
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+    var randomstring = Math.random().toString(36).slice(-8);
+    await this.emailService.sendGeneratedPassword(
+      email,
+      randomstring,
+      user.name
+    );
+    const hashedPassword = await bcrypt.hash(randomstring, 10);
+    await this.userRepository.save({
+      ...user,
+      password: hashedPassword,
+    });
+
+    return { message: "Password send to email" };
   }
 
   async changePassword(
@@ -67,7 +81,7 @@ export class UserService {
 
     const pwMatch = await bcrypt.compare(
       changePasswordDto.currentPassword,
-      changePasswordDto.newPassword
+      user.password
     );
 
     if (!pwMatch) {
