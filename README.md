@@ -134,8 +134,6 @@ Delete a user account.
 
 **Method:** DELETE
 
-</br>
-
 ## AuthController
 
 #### login
@@ -164,8 +162,6 @@ Request Body:
 `{
     "token": "token generated"
 }`
-
-</br>
 
 ### Notes
 
