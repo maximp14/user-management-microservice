@@ -38,8 +38,4 @@ describe("authService", () => {
   it("should be defined", () => {
     expect(authService).toBeDefined();
   });
-
-  describe("login", () => {
-    it("should return user not found", async () => {});
-  });
 });
