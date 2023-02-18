@@ -166,4 +166,3 @@ Request Body:
 ### Notes
 
 Develop in nodejs version 16.19.0.
-Left to do refresh token and unitest.
